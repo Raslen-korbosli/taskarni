@@ -13,8 +13,9 @@ export default function SideBarLinks({
 }) {
   const pathName = usePathname();
   const isActive = href === pathName;
+
   return (
-    <Link href={href} className="w-full transition-colors">
+    <Link href={href + "?view=board"} className="w-full transition-colors">
       <div
         className={`${isActive ? "bg-gray-100 dark:bg-gray-600" : ""} relative flex cursor-pointer items-center gap-3 rounded-sm px-8 py-3 transition-all hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700`}
       >

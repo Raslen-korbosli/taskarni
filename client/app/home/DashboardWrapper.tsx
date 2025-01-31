@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import NavBar from "./(components)/NavBar";
-import SideBar from "./(components)/SideBar";
-import StoreProvider, { useAppSelector } from "./providers/StoreProvider";
+import NavBar from "../(components)/NavBar";
+import SideBar from "../(components)/SideBar";
+import StoreProvider, { useAppSelector } from "../providers/StoreProvider";
 
 function DashboardWrapper({ children }: { children: React.ReactNode }) {
   const isSideBarCollapsed = useAppSelector((state) => {
@@ -30,7 +30,7 @@ function DashboardWrapper({ children }: { children: React.ReactNode }) {
         {!isSideBarCollapsed && <SideBar />}
       </div>
       <main
-        className={`flex flex-1 flex-col bg-gray-50 transition-all duration-300 ease-in-out dark:bg-dark-bg`}
+        className={`flex flex-1 flex-col bg-gray-50 transition-all duration-300 ease-in-out dark:bg-dark-bg dark:text-gray-50`}
       >
         <NavBar />
         {children}

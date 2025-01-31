@@ -24,6 +24,7 @@ import { useAppSelector } from "../providers/StoreProvider";
 import { setIsSideBarCollapsed } from "../state/reduxStates";
 import SideBarLinks from "./SideBarLinks";
 import { useState } from "react";
+import { useGetProjectsQuery } from "@/app/state/api";
 // import { useState } from "react";
 
 export default function SideBar() {
@@ -43,32 +44,32 @@ export default function SideBar() {
   }
   const menuOptions: menuOptionInterface[] = [
     {
-      href: "/",
+      href: "/home",
       label: "Home",
       icon: Home,
     },
     {
-      href: "/timeline",
+      href: "/home/timeline",
       label: "timeline",
       icon: Briefcase,
     },
     {
-      href: "/search",
+      href: "/home/search",
       label: "Search",
       icon: Search,
     },
     {
-      href: "/settings",
+      href: "/home/settings",
       label: "Settings",
       icon: Settings,
     },
     {
-      href: "/teams",
+      href: "/home/teams",
       label: "Teams",
       icon: Users,
     },
     {
-      href: "/Users",
+      href: "/home/users",
       label: "Users",
       icon: User,
     },
@@ -100,6 +101,9 @@ export default function SideBar() {
       icon: Layers3,
     },
   ];
+  const { data } = useGetProjectsQuery();
+  const projects = data?.data;
+
   const [showProjects, setShowProjects] = useState(false);
   const [showPriority, setShowPriority] = useState(false);
   const sideBarClassNames = ` fixed flex flex-col h-full justify-between shadow-xl  duration-300 z-40 overflow-y-auto dark:bg-black bg-white w-64`;
@@ -148,11 +152,21 @@ export default function SideBar() {
           >
             <span className="text-gray-700 dark:text-gray-100">Projects</span>
             {showProjects ? (
-              <ChevronUp className="h-6 w-6 text-gray-700 dark:text-gray-100" />
-            ) : (
               <ChevronDown className="h-6 w-6 text-gray-700 dark:text-gray-100" />
+            ) : (
+              <ChevronUp className="h-6 w-6 text-gray-700 dark:text-gray-100" />
             )}
           </button>
+          {showProjects &&
+            projects &&
+            projects.map((project) => (
+              <SideBarLinks
+                href={`/home/projects/${project.id}`}
+                icon={Briefcase}
+                label={project.projectName}
+                key={project.id}
+              />
+            ))}
           {/* {priority} */}
           <button
             onClick={() => setShowPriority((prv) => !prv)}
@@ -160,9 +174,9 @@ export default function SideBar() {
           >
             <span className="text-gray-700 dark:text-gray-100">Priority</span>
             {showPriority ? (
-              <ChevronUp className="h-6 w-6 text-gray-700 dark:text-gray-100" />
-            ) : (
               <ChevronDown className="h-6 w-6 text-gray-700 dark:text-gray-100" />
+            ) : (
+              <ChevronUp className="h-6 w-6 text-gray-700 dark:text-gray-100" />
             )}
           </button>
           {showPriority &&

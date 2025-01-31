@@ -10,9 +10,7 @@ export const getProjects = async (req: Request, res: Response) => {
       data: allProject,
       length: allProject.length,
     });
-    res.status(200).json();
   } catch (e) {
-    // res.status(500).json({ message: 'error retrieving projects' });
     res.status(400).json({
       status: 'fail',
       message: 'error retrieving projects',
