@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useAppSelector } from "../providers/StoreProvider";
 import { Task } from "../state/api";
 import Header from "./Header";
+import AddNewTaskButton from "./AddNewTaskButton";
 type taskTypeItems = "task" | "milestone" | "project";
 export default function TimelineView({
   tasks,
@@ -81,14 +82,7 @@ export default function TimelineView({
             barBackgroundSelectedColor={isDarkMode ? "#000" : " #9ba1a6"}
           />
         </div>
-        <div className="px-4 pb-5 pt-1">
-          <button
-            className="flex items-center rounded bg-blue-primary px-3 py-2 text-white hover:bg-blue-500"
-            onClick={() => setIsModelNewTaskOpen(true)}
-          >
-            Add new task
-          </button>
-        </div>
+        <AddNewTaskButton setIsModelNewTaskOpen={setIsModelNewTaskOpen} />
       </div>
     </div>
   );
