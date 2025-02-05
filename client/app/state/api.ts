@@ -57,15 +57,18 @@ export interface Attachment {
   id: number;
   userId: number;
   taskId: number;
+  fileName?: string;
+  fileUrl?: string;
 }
 export interface Task {
-  taskId: number;
+  id: number;
   taskName: string;
   description?: string;
   startDate?: string;
   dueDate: string;
   priority?: Priority;
   points?: string;
+  tags: string;
   status?: Status;
   projectId: number;
   authorUserId?: number;
@@ -105,6 +108,16 @@ export const api = createApi({
       },
       invalidatesTags: ["tasks"],
     }),
+    updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
+      query: ({ taskId, status }) => ({
+        url: `tasks/${taskId}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: (result, error, { taskId }) => [
+        { type: "tasks" as const, taskId: taskId },
+      ],
+    }),
   }),
 });
 export const {
@@ -112,4 +125,5 @@ export const {
   useCreateProjectMutation,
   useGetTasksQuery,
   useCreateTaskMutation,
+  useUpdateTaskStatusMutation,
 } = api;

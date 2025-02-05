@@ -16,7 +16,8 @@ export default function Project({
   const { id } = use(params);
   const searchParams = useSearchParams();
   const viewMode = searchParams.get("view");
-  const [activeTab, setActiveTab] = useState("board");
+  const [activeTab, setActiveTab] = useState(viewMode || "");
+  const [isModelNewTaskOpen, setIsModelNewTaskOpen] = useState(false);
   const { data, isLoading, error } = useGetTasksQuery({
     projectId: Number(id),
   });
@@ -25,16 +26,36 @@ export default function Project({
     <div>
       <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
       {viewMode === "board" && (
-        <BoardView tasks={tasks} isLoading={isLoading} error={error} />
+        <BoardView
+          tasks={tasks}
+          isLoading={isLoading}
+          error={error}
+          setIsModelNewTaskOpen={setIsModelNewTaskOpen}
+        />
       )}
       {viewMode === "list" && (
-        <ListView tasks={tasks} isLoading={isLoading} error={error} />
+        <ListView
+          tasks={tasks}
+          isLoading={isLoading}
+          error={error}
+          setIsModelNewTaskOpen={setIsModelNewTaskOpen}
+        />
       )}
       {viewMode === "timeline" && (
-        <TimelineView tasks={tasks} isLoading={isLoading} error={error} />
+        <TimelineView
+          tasks={tasks}
+          isLoading={isLoading}
+          error={error}
+          setIsModelNewTaskOpen={setIsModelNewTaskOpen}
+        />
       )}
       {viewMode === "table" && (
-        <TableView tasks={tasks} isLoading={isLoading} error={error} />
+        <TableView
+          tasks={tasks}
+          isLoading={isLoading}
+          error={error}
+          setIsModelNewTaskOpen={setIsModelNewTaskOpen}
+        />
       )}
     </div>
   );
