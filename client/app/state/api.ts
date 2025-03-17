@@ -89,7 +89,7 @@ export const api = createApi({
     }),
     createProject: build.mutation<Project, Partial<Project>>({
       query: (project) => ({
-        url: "project",
+        url: "projects",
         method: "post",
         body: project,
       }),
@@ -104,7 +104,7 @@ export const api = createApi({
     }),
     createTask: build.mutation<Task, Partial<Task>>({
       query: (newTask) => {
-        return { url: "task", method: "post", body: newTask };
+        return { url: "tasks", method: "post", body: newTask };
       },
       invalidatesTags: ["tasks"],
     }),

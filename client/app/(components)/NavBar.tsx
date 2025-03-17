@@ -37,7 +37,7 @@ export default function NavBar() {
           />
         </div>
       </div>
-      <div className="flex items-center gap-2 transition-all">
+      <div className="flex items-center gap-2">
         <button
           className={`rounded bg-gray-100 p-2 ${isDarkMode ? "dark:bg-gray-700 dark:hover:bg-gray-500" : "hover:bg-gray-200"}`}
           onClick={toggleDarkMode}

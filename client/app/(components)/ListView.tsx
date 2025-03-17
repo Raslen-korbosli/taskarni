@@ -10,7 +10,6 @@ export default function ListView({
   tasks,
   isLoading,
   error,
-  setIsModelNewTaskOpen,
 }: {
   tasks: Task[];
   isLoading: boolean;
@@ -20,7 +19,7 @@ export default function ListView({
   if (isLoading) return <Loader2 className="size-8 animate-spin" />;
   if (error) return <AlertCircle className="size-8" />;
   return (
-    <div className="px-4 pb-8 xl:px-6">
+    <div className="h-[calc(100vh-14.5rem)] overflow-y-scroll px-4 pb-8 xl:px-6">
       <div className="pt-5">
         <Header name="List" />
       </div>

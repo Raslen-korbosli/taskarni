@@ -19,20 +19,20 @@ export const getProjects = async (req: Request, res: Response) => {
 };
 export const createProject = async (req: Request, res: Response) => {
   try {
-    const { name, description, startDate, endDate } = req.body;
+    const { projectName, description, startDate, endDate } = req.body;
+    console.log(req.body);
     const newProject = await db.project.create({
-      data: { projectName: name, description, startDate, endDate },
+      data: { projectName, description, startDate, endDate },
     });
 
     res.status(201).json({
       status: 'success',
       data: newProject,
     });
-    res.status(200).json();
   } catch (e) {
     res.status(400).json({
       status: 'fail',
-      message: 'error creating new project',
+      message: 'error creating new project' + e,
     });
   }
 };

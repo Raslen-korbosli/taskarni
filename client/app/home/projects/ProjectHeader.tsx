@@ -1,8 +1,10 @@
 "use client";
+import AddNewProjectButton from "@/app/(components)/AddNewTaskButton";
 import Header from "@/app/(components)/Header";
+import ModelNewProject from "@/app/(components)/ModelNewProject";
 import TabButton from "@/app/(components)/TabButton";
-import { Clock, Filter, Grid3X3, List, Share2, Table } from "lucide-react";
-import { Dispatch, JSX, SetStateAction } from "react";
+import { Clock, Filter, Grid3X3, List, Share2 } from "lucide-react";
+import { Dispatch, JSX, SetStateAction, useState } from "react";
 
 export default function ProjectHeader({
   activeTab,
@@ -10,8 +12,9 @@ export default function ProjectHeader({
 }: {
   activeTab: string;
   setActiveTab: Dispatch<SetStateAction<string>>;
+  setIsModelNewTaskOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  // const [isModelNewProjectOpen, setIsModelNewProjectOpen] = useState(false);
+  const [isModelNewProjectOpen, setIsModelNewProjectOpen] = useState(false);
   interface headerNavListInterface {
     name: string;
     icon: JSX.Element;
@@ -20,7 +23,6 @@ export default function ProjectHeader({
     { name: "Board", icon: <Grid3X3 className="size-5" /> },
     { name: "List", icon: <List className="size-5" /> },
     { name: "Timeline", icon: <Clock className="size-5" /> },
-    { name: "Table", icon: <Table className="size-5" /> },
   ];
   const renderedNavList = headerNavList.map((item, index) => (
     <div key={index}>
@@ -35,8 +37,19 @@ export default function ProjectHeader({
   return (
     <div className="px-4 xl:px-6">
       {/* {model new project} */}
+      <ModelNewProject
+        isOpen={isModelNewProjectOpen}
+        onClose={() => setIsModelNewProjectOpen(false)}
+      />
       <div className="py-6">
-        <Header name="Product design development" />
+        <Header
+          name="Product design development"
+          buttonComponent={
+            <AddNewProjectButton
+              setIsModelNewProjectOpen={setIsModelNewProjectOpen}
+            />
+          }
+        />
       </div>
       {/* {tabs} */}
       <div className="flex flex-col-reverse justify-between gap-2 border-y border-gray-200 py-2 dark:border-stroke-dark lg:flex-row lg:items-center">

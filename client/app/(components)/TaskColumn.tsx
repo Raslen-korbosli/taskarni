@@ -1,5 +1,5 @@
 "use client";
-import { Task } from "@/app/state/api";
+import { Status, Task } from "@/app/state/api";
 import { Dispatch, SetStateAction } from "react";
 import DropZone from "./DropZone";
 
@@ -9,13 +9,14 @@ export default function TaskColumn({
   moveTask,
   setIsModelNewTaskOpen,
 }: {
-  status: string;
+  status: Status;
   tasks: Task[];
   moveTask: (taskId: number, status: string) => void;
+
   setIsModelNewTaskOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div>
+    <div className="">
       <DropZone
         moveTask={moveTask}
         tasks={tasks}

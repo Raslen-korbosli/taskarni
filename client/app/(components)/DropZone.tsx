@@ -1,9 +1,11 @@
-import { useDrag, useDrop } from "react-dnd";
-import { Task } from "@/app/state/api";
-import { Dispatch, SetStateAction } from "react";
-import { EllipsisVertical, MessageSquare, Plus } from "lucide-react";
+import { Status, Task } from "@/app/state/api";
 import { format } from "date-fns";
+import { EllipsisVertical, MessageSquare, Plus } from "lucide-react";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
+import { useDrag, useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+import { setCurrentStatus } from "../state/reduxStates";
 
 const DraggableTask = ({ taskId, task }: { taskId: number; task: Task }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -28,7 +30,7 @@ const DraggableTask = ({ taskId, task }: { taskId: number; task: Task }) => {
   return (
     <div
       ref={drag as (element: HTMLDivElement | null) => void}
-      className={`mb-4 flex flex-col rounded-md bg-white shadow dark:bg-dark-secondary ${isDragging ? "opacity-50" : "opacity-100"}`}
+      className={`mb-4 flex flex-col rounded-md bg-white shadow dark:bg-dark-secondary ${isDragging ? "opacity-50" : "opacity-100"} `}
     >
       {task.attachments && task.attachments.length > 0 && (
         <Image
@@ -46,10 +48,10 @@ const DraggableTask = ({ taskId, task }: { taskId: number; task: Task }) => {
           <div className="flex flex-wrap items-center gap-2">
             {task.priority && <PriorityTag priority={task.priority} />}
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center justify-center gap-2">
             {taskTagSplit.map((tag) => (
               <div
-                className="rounded-full bg-blue-100 px-2 py-1 text-sm"
+                className="rounded-full bg-blue-100 px-2 py-1 text-sm dark:text-dark-secondary"
                 key={tag}
               >
                 {tag}
@@ -120,7 +122,7 @@ export default function DropZone({
   moveTask,
   setIsModelNewTaskOpen,
 }: {
-  status: string;
+  status: Status;
   tasks: Task[];
   moveTask: (taskId: number, status: string) => void;
   setIsModelNewTaskOpen: Dispatch<SetStateAction<boolean>>;
@@ -146,12 +148,16 @@ export default function DropZone({
     "Under Review": "#000000",
   };
 
+  const dispatch = useDispatch();
+  const toggleCurrentStatus = (status: Status) =>
+    dispatch(setCurrentStatus(status));
+
   return (
     <div
       ref={drop as (element: HTMLDivElement | null) => void}
       className={`sl:py-4 rounded-lg py-2 xl:px-2 ${isOver ? "bg-blue-100 dark:bg-neutral-950" : ""}`}
     >
-      <div className="mb-3 flex w-full">
+      <div className={`mb-3 flex ${isOver ? "" : ""}`}>
         <div
           className={`w-2 rounded-s-lg`}
           style={{ backgroundColor: statusColor[status as StatusType] }}
@@ -170,7 +176,10 @@ export default function DropZone({
             </button>
             <button
               className="flex size-6 items-center justify-center rounded bg-gray-200 dark:bg-dark-tertiary dark:text-white"
-              onClick={() => setIsModelNewTaskOpen(true)}
+              onClick={() => {
+                toggleCurrentStatus(status);
+                setIsModelNewTaskOpen(true);
+              }}
             >
               {" "}
               <Plus className="size-4" />
