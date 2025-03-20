@@ -3,22 +3,19 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react";
 import "gantt-task-react/dist/index.css";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useAppSelector } from "../providers/StoreProvider";
 import { Task } from "../state/api";
 import Header from "./Header";
-import AddNewTaskButton from "./AddNewTaskButton";
 type taskTypeItems = "task" | "milestone" | "project";
 export default function TimelineView({
   tasks,
   isLoading,
   error,
-  setIsModelNewTaskOpen,
 }: {
   tasks: Task[];
   isLoading: boolean;
   error: FetchBaseQueryError | SerializedError | undefined;
-  setIsModelNewTaskOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
   const [DisplayOption, setDisplayOption] = useState<DisplayOption>({
@@ -82,7 +79,6 @@ export default function TimelineView({
             barBackgroundSelectedColor={isDarkMode ? "#000" : " #9ba1a6"}
           />
         </div>
-        <AddNewTaskButton setIsModelNewTaskOpen={setIsModelNewTaskOpen} />
       </div>
     </div>
   );

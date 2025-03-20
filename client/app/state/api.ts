@@ -17,6 +17,7 @@ export interface TasksResponse {
   data: Task[];
   length: number;
 }
+
 export enum Status {
   ToDo = "ToDo",
   WorkInProgress = "WorkInProgress",
@@ -59,6 +60,12 @@ export interface Attachment {
   taskId: number;
   fileName?: string;
   fileUrl?: string;
+}
+export interface SearchResult {
+  status: string;
+  tasks: Task[];
+  projects: Project[];
+  users: User[];
 }
 export interface Task {
   id: number;
@@ -118,6 +125,13 @@ export const api = createApi({
         { type: "tasks" as const, taskId: taskId },
       ],
     }),
+    search: build.query<SearchResult, string>({
+      query: (searchTerm) => `search?query=${searchTerm}`,
+      // providesTags: (result) =>
+      //   Array.isArray(result)
+      //     ? result.map(({ taskId }) => ({ type: "tasks" as const, taskId }))
+      //     : [{ type: "tasks" as const }],
+    }),
   }),
 });
 export const {
@@ -126,4 +140,5 @@ export const {
   useGetTasksQuery,
   useCreateTaskMutation,
   useUpdateTaskStatusMutation,
+  useSearchQuery,
 } = api;

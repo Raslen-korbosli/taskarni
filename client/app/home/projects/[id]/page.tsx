@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import ProjectHeader from "../ProjectHeader";
 import BoardView from "@/app/(components)/BoardView";
 import ListView from "@/app/(components)/ListView";
@@ -16,12 +16,13 @@ export default function Project({
 }) {
   const { id } = use(params);
   const dispatch = useDispatch();
-  dispatch(setProjectId(Number(id)));
   const searchParams = useSearchParams();
   const viewMode = searchParams.get("view");
   const [activeTab, setActiveTab] = useState(viewMode || "");
   const [isModelNewTaskOpen, setIsModelNewTaskOpen] = useState(false);
-  console.log(isModelNewTaskOpen);
+  useEffect(() => {
+    dispatch(setProjectId(Number(id)));
+  }, [id, dispatch]);
   const { data, isLoading, error } = useGetTasksQuery({
     projectId: Number(id),
   });
@@ -51,12 +52,7 @@ export default function Project({
         />
       )}
       {viewMode === "timeline" && (
-        <TimelineView
-          tasks={tasks}
-          isLoading={isLoading}
-          error={error}
-          setIsModelNewTaskOpen={setIsModelNewTaskOpen}
-        />
+        <TimelineView tasks={tasks} isLoading={isLoading} error={error} />
       )}
     </div>
   );

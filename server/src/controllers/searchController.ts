@@ -1,28 +1,43 @@
-// import { Request, Response } from 'express';
-// import { db } from '../../prisma/db';
+import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { db } from '../../prisma/db';
 
-// export const search = async (req: Request, res: Response) => {
-//   try {
-//     const { query } = req.query;
-//     const allTasks = await db.task.findMany({
-//       where: { projectId: Number(projectId) },
-//       include: {
-//         assignee: true,
-//         attachment: true,
-//         comments: true,
-//         authorUser: true,
-//       },
-//     });
+export const search = async (req: Request, res: Response): Promise<void> => {
+  const { query } = req.query;
+  console.log(query);
+  try {
+    const tasks = await db.task.findMany({
+      where: {
+        OR: [
+          { taskName: { contains: query as string, mode: 'insensitive' } },
+          { description: { contains: query as string, mode: 'insensitive' } },
+        ],
+      },
+    });
 
-//     res.status(200).json({
-//       status: 'success',
-//       data: allTasks,
-//       length: allTasks.length,
-//     });
-//   } catch (e: any) {
-//     res.status(400).json({
-//       status: 'fail',
-//       message: 'error retrieving projects' + e.message,
-//     });
-//   }
-// };
+    const projects = await db.project.findMany({
+      where: {
+        OR: [
+          { projectName: { contains: query as string, mode: 'insensitive' } },
+          { description: { contains: query as string, mode: 'insensitive' } },
+        ],
+      },
+    });
+
+    // const users = await db.user.findMany({
+    //   where: {
+    //     OR: [{ username: { contains: query as string } }],
+    //   },
+    // });
+    res.status(200).json({
+      status: 'success',
+      tasks,
+      projects,
+      users: [],
+    });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error performing search: ${error.message}` });
+  }
+};

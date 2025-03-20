@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import projectRouter from './routes/projectRoutes';
 import taskRouter from './routes/taskRoutes';
+import searchRouter from './routes/searchRoute';
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -20,8 +21,9 @@ app.get('/', (req, res) => {
 });
 app.use('/projects', projectRouter);
 app.use('/tasks', taskRouter);
+app.use('/search', searchRouter);
 // /server
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
-  console.log('server running on port' + PORT);
+  console.log('server running on port ' + PORT);
 });

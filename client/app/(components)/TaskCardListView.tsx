@@ -1,8 +1,18 @@
 import Image from "next/image";
 import { Task } from "../state/api";
 import { format } from "date-fns";
+import React from "react";
 
-export default function TaskCardListView({ task }: { task: Task }) {
+export default function TaskCardListView({
+  task,
+  searchTerm,
+}: {
+  task: Task;
+  searchTerm?: string;
+}) {
+  const { taskName } = task;
+  const taskNameLower = taskName.toLowerCase();
+
   return (
     <div className="mb-3 rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white">
       {task.attachments && task.attachments.length > 0 && (
@@ -25,12 +35,51 @@ export default function TaskCardListView({ task }: { task: Task }) {
         {task.id}
       </p>
       <p>
-        <strong> Title: </strong>
-        {task.taskName || ""}{" "}
+        <strong>Task name: </strong>
+        {taskNameLower && searchTerm && taskNameLower.includes(searchTerm) ? (
+          <>
+            {taskNameLower.substring(0, taskNameLower.indexOf(searchTerm))}
+            <span className="bg-yellow-200 dark:bg-yellow-700">
+              {taskName.substring(
+                taskNameLower.indexOf(searchTerm),
+                taskNameLower.indexOf(searchTerm) + searchTerm.length,
+              )}
+            </span>
+            {taskNameLower.substring(
+              taskNameLower.indexOf(searchTerm) + searchTerm.length,
+            )}
+          </>
+        ) : taskName ? (
+          taskName
+        ) : (
+          ""
+        )}
       </p>
       <p>
         <strong>Description: </strong>
-        {task.description || "No description provided"}{" "}
+        {task.description &&
+        searchTerm &&
+        task.description.toLowerCase().includes(searchTerm.toLowerCase()) ? (
+          <>
+            {task.description.substring(
+              0,
+              task.description.indexOf(searchTerm),
+            )}
+            <span className="bg-yellow-200 dark:bg-yellow-700">
+              {task.description.substring(
+                task.description.indexOf(searchTerm),
+                task.description.indexOf(searchTerm) + searchTerm.length,
+              )}
+            </span>
+            {task.description.substring(
+              task.description.indexOf(searchTerm) + searchTerm.length,
+            )}
+          </>
+        ) : task.description ? (
+          task.description
+        ) : (
+          "No description provided"
+        )}
       </p>
       <p>
         <strong>Status: </strong>
