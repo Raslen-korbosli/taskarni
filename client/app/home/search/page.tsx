@@ -4,6 +4,7 @@ import Header from "@/app/(components)/Header";
 import ProjectCard from "@/app/(components)/ProjectCard";
 import TaskCardListView from "@/app/(components)/TaskCardListView";
 import { useSearchQuery } from "@/app/state/api";
+import { debounce } from "lodash";
 import React, { useEffect, useState } from "react";
 
 const Search = () => {
@@ -16,17 +17,16 @@ const Search = () => {
     skip: searchTerm.length < 3,
   });
 
-  // const handleSearch = debounce(
-  //   (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     setSearchTerm(event.target.value);
-  //   },
-  //   500,
-  // );
+  const handleSearch = debounce(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchTerm(event.target.value);
+    },
+    300,
+  );
 
-  // useEffect(() => {
-  //   return handleSearch.cancel;
-  // }, [handleSearch.cancel]);
-  console.log(searchResults);
+  useEffect(() => {
+    return handleSearch.cancel;
+  }, [handleSearch.cancel]);
   return (
     <div className="h-[calc(100vh-64px)] p-8">
       <Header name="Search " />
@@ -35,7 +35,7 @@ const Search = () => {
           type="text"
           placeholder="Search..."
           className="mb-6 w-1/2 rounded border p-3 text-dark-secondary shadow"
-          onChange={(event) => setSearchTerm(event.target.value || "")}
+          onChange={handleSearch}
         />
       </div>
       <div className="h-[calc(100vh-222px)] overflow-y-auto p-5">

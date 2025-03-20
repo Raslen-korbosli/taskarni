@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { db } from '../../prisma/db';
 
 export const search = async (req: Request, res: Response): Promise<void> => {
   const { query } = req.query;
-  console.log(query);
   try {
     const tasks = await db.task.findMany({
       where: {
