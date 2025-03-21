@@ -22,6 +22,15 @@ export interface UsersResponse {
   users: User[];
   usersLength: number;
 }
+type TeamWithUserName = Team & {
+  productOwner: string;
+  productManger: string;
+};
+export interface TeamsWithUsernameResponse {
+  status: string;
+  teamsWithUserName: TeamWithUserName[];
+  teamsWithUserNameLength: number;
+}
 export enum Status {
   ToDo = "ToDo",
   WorkInProgress = "WorkInProgress",
@@ -65,6 +74,23 @@ export interface Attachment {
   fileName?: string;
   fileUrl?: string;
 }
+
+export interface Team {
+  id: number;
+  teamName: string;
+  productOwnerUserId?: number;
+  projectManagerUserId?: string;
+  projectTeams?: ProjectTeam[];
+  users: User[];
+}
+export interface ProjectTeam {
+  id: number;
+  teamId: number;
+  projectId?: number;
+  startDate?: string;
+  endDate?: string;
+}
+
 export interface SearchResult {
   status: string;
   tasks: Task[];
@@ -93,7 +119,7 @@ export interface Task {
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
   reducerPath: "api",
-  tagTypes: ["projects", "tasks", "users"],
+  tagTypes: ["projects", "tasks", "users", "teams"],
   endpoints: (build) => ({
     getProjects: build.query<ProjectsResponse, void>({
       query: () => "projects",
@@ -138,6 +164,10 @@ export const api = createApi({
       query: () => "users",
       providesTags: ["users"],
     }),
+    getTeam: build.query<TeamsWithUsernameResponse, void>({
+      query: () => "users",
+      providesTags: ["teams"],
+    }),
   }),
 });
 export const {
@@ -148,4 +178,5 @@ export const {
   useUpdateTaskStatusMutation,
   useSearchQuery,
   useGetUsersQuery,
+  useGetTeamQuery,
 } = api;

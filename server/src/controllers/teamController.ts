@@ -3,15 +3,29 @@ import { db } from '../../prisma/db';
 
 export const getTeam = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await db.user.findMany({});
+    const teams = await db.team.findMany({});
+    const teamsWithUserName = await Promise.all(
+      teams.map(async (team) => {
+        const productOwner = await db.user.findUnique({
+          where: { userId: team.productOwnerUserId! },
+          select: { username: true },
+        });
+        const productManager = await db.user.findUnique({
+          where: { userId: team.projectManagerUserId! },
+          select: { username: true },
+        });
+        return { ...team, productOwner, productManager };
+      })
+    );
+
     res.status(200).json({
       status: 'success',
-      users,
-      usersLength: users.length,
+      teamsWithUserName,
+      teamsWithUserNameLength: teamsWithUserName.length,
     });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: `Error performing users search: ${error.message}` });
+    res.status(500).json({
+      message: `Error performing teams with usernames: ${error.message}`,
+    });
   }
 };
