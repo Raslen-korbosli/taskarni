@@ -41,6 +41,9 @@ const Search = () => {
       <div className="h-[calc(100vh-222px)] overflow-y-auto p-5">
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error occurred while fetching search results.</p>}
+        {(!searchResults || searchResults.searchLength == 0) && (
+          <p>No search results.</p>
+        )}
         {!isLoading && !isError && searchResults && (
           <div className="">
             {searchResults.tasks && searchResults.tasks?.length > 0 && (

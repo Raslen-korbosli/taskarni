@@ -23,7 +23,6 @@ app.get('/', (req, res) => {
 app.use('/projects', projectRouter);
 app.use('/tasks', taskRouter);
 app.use('/search', searchRouter);
-app.use('/search', searchRouter);
 app.use('/users', userRouter);
 // /server
 const PORT = process.env.PORT || 8000;

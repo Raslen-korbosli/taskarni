@@ -1,9 +1,7 @@
 "use client";
 import Header from "@/app/(components)/Header";
-import { useAppSelector } from "@/app/providers/StoreProvider";
 import { useState } from "react";
 export default function SettingsPage() {
-  const projectId = useAppSelector((state) => state.global.projectId);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -19,9 +17,6 @@ export default function SettingsPage() {
     setDueDate("");
     setTags("");
   };
-  // const isFormValid = () => {
-  //   return taskName && description && tags && dueDate && startDate;
-  // };
 
   const inputStyles =
     "w-full rounded border border-gray-300 p-2 shadow-sm dark:border-dark-tertiary dark:bg-dark-tertiary dark:text-white dark:focus:outline-none";

@@ -24,7 +24,7 @@ function DashboardWrapper({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen w-full bg-gray-50 text-gray-900 dark:bg-black">
       <div
         className={`transition-all duration-300 ease-in-out ${
-          isSideBarCollapsed ? "w-0 opacity-0" : "w-64 opacity-100"
+          isSideBarCollapsed ? "w-0 opacity-0" : "min-w-64 opacity-100"
         }`}
       >
         {!isSideBarCollapsed && <SideBar />}

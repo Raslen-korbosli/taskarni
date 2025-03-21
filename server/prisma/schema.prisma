@@ -10,8 +10,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url  	    = env("DATABASE_URL")
-  // uncomment next line if you use Prisma <5.10
-  // directUrl = env("DATABASE_URL_UNPOOLED")
+
 }
 model User {
   userId        Int      @id @default(autoincrement())
@@ -21,6 +20,7 @@ model User {
   teamId      Int? 
   authoredTasks Task[] @relation("taskAuthor")
   assignedTasks Task[] @relation("taskAssignee")
+  createdAt DateTime @default(now())
   taskAssignment TaskAssignment[]
   attachments Attachment[]
   comments Comment[]

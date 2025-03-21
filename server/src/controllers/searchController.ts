@@ -32,6 +32,7 @@ export const search = async (req: Request, res: Response): Promise<void> => {
       tasks,
       projects,
       users: [],
+      searchLength: tasks.length + projects.length,
     });
   } catch (error: any) {
     res

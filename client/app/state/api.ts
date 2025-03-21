@@ -17,7 +17,11 @@ export interface TasksResponse {
   data: Task[];
   length: number;
 }
-
+export interface UsersResponse {
+  status: string;
+  users: User[];
+  usersLength: number;
+}
 export enum Status {
   ToDo = "ToDo",
   WorkInProgress = "WorkInProgress",
@@ -66,6 +70,7 @@ export interface SearchResult {
   tasks: Task[];
   projects: Project[];
   users: User[];
+  searchLength: number;
 }
 export interface Task {
   id: number;
@@ -88,7 +93,7 @@ export interface Task {
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_URL }),
   reducerPath: "api",
-  tagTypes: ["projects", "tasks"],
+  tagTypes: ["projects", "tasks", "users"],
   endpoints: (build) => ({
     getProjects: build.query<ProjectsResponse, void>({
       query: () => "projects",
@@ -127,10 +132,11 @@ export const api = createApi({
     }),
     search: build.query<SearchResult, string>({
       query: (searchTerm) => `search?query=${searchTerm}`,
-      // providesTags: (result) =>
-      //   Array.isArray(result)
-      //     ? result.map(({ taskId }) => ({ type: "tasks" as const, taskId }))
-      //     : [{ type: "tasks" as const }],
+      providesTags: ["tasks", "projects"],
+    }),
+    getUsers: build.query<UsersResponse, void>({
+      query: () => "users",
+      providesTags: ["users"],
     }),
   }),
 });
@@ -141,4 +147,5 @@ export const {
   useCreateTaskMutation,
   useUpdateTaskStatusMutation,
   useSearchQuery,
+  useGetUsersQuery,
 } = api;
