@@ -52,7 +52,7 @@ export default function TimelineView({
 
   return (
     <div className="px-4 xl:px-6">
-      <div className="flex flex-wrap items-center justify-center gap-2 py-5">
+      <div className="items-center gap-2 py-5">
         <Header name="Project task timeline" />
         <div className="relative inline-block w-64">
           <select

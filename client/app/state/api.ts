@@ -61,6 +61,11 @@ export interface TaskAssignment {
   userId: number;
   taskId: number;
 }
+export interface TaskDistributionResults {
+  status: string;
+  allTasksDistributions: Task[];
+  length: number;
+}
 export interface Comment {
   id: number;
   text: string;
@@ -140,6 +145,10 @@ export const api = createApi({
           ? result.map(({ taskId }) => ({ type: "tasks" as const, taskId }))
           : [{ type: "tasks" as const }],
     }),
+    getTasksDistribution: build.query<TaskDistributionResults, void>({
+      query: () => "tasks/all",
+      providesTags: ["tasks"],
+    }),
     createTask: build.mutation<Task, Partial<Task>>({
       query: (newTask) => {
         return { url: "tasks", method: "post", body: newTask };
@@ -179,4 +188,5 @@ export const {
   useSearchQuery,
   useGetUsersQuery,
   useGetTeamQuery,
+  useGetTasksDistributionQuery,
 } = api;

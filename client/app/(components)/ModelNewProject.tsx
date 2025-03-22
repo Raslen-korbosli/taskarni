@@ -25,6 +25,11 @@ export default function ModelNewProject({
       projectName: projectName,
       startDate: format(startDate, "yyyy-MM-dd'T'HH:mm:ss'Z'"),
     });
+    onClose();
+    setProjectName("");
+    setProjectDescription("");
+    setStartDate("");
+    setEndDate("");
   };
   const isFormValid = () => {
     return projectName && projectDescription;

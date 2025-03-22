@@ -83,3 +83,21 @@ export const updateTask = async (req: Request, res: Response) => {
     });
   }
 };
+export const getTasksDistributions = async (req: Request, res: Response) => {
+  try {
+    const allTasksDistributions = await db.task.findMany({
+      where: {},
+    });
+
+    res.status(200).json({
+      status: 'success',
+      allTasksDistributions,
+      length: allTasksDistributions.length,
+    });
+  } catch (e: any) {
+    res.status(400).json({
+      status: 'fail',
+      message: 'error retrieving tasks distributions' + e.message,
+    });
+  }
+};
