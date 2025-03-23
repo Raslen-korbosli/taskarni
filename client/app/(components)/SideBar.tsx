@@ -48,11 +48,7 @@ export default function SideBar() {
       label: "Home",
       icon: Home,
     },
-    {
-      href: "/home/timeline",
-      label: "timeline",
-      icon: Briefcase,
-    },
+
     {
       href: "/home/search",
       label: "Search",
@@ -76,27 +72,27 @@ export default function SideBar() {
   ];
   const menuPriority: menuOptionInterface[] = [
     {
-      href: "/priority/urgent",
+      href: "/home/priority/urgent",
       label: "Urgent",
       icon: AlertCircle,
     },
     {
-      href: "/priority/high",
+      href: "/home//priority/high",
       label: "High",
       icon: Shield,
     },
     {
-      href: "/priority/medium",
+      href: "/home/priority/medium",
       label: "Medium",
       icon: AlertTriangle,
     },
     {
-      href: "/priority/low",
+      href: "/home/priority/low",
       label: "Low",
       icon: AlertOctagon,
     },
     {
-      href: "/priority/backlog",
+      href: "/home/priority/backlog",
       label: "Backlog",
       icon: Layers3,
     },

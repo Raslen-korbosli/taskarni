@@ -19,18 +19,18 @@ import {
   Priority,
   Project,
   useGetProjectsQuery,
-  useGetTasksDistributionQuery,
+  useGetTasksByUserQuery,
 } from "../state/api";
 import { dataGridClassNames, dataGridSxStyles } from "../utils";
 
 export default function Home() {
-  const projectId = useAppSelector((state) => state.global.projectId);
+  // const projectId = useAppSelector((state) => state.global.projectId);
   const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
   const {
     data: tasksDistributions,
     isLoading: isLoadingTasks,
     error: tasksError,
-  } = useGetTasksDistributionQuery();
+  } = useGetTasksByUserQuery(0);
   const {
     data: projects,
     isLoading: isLoadingProjects,
@@ -39,7 +39,7 @@ export default function Home() {
   if (isLoadingTasks || isLoadingProjects) return <p> Loading ...</p>;
   if (tasksError || projectError) return <p> Error getting data </p>;
   const countPriority =
-    tasksDistributions?.allTasksDistributions.reduce(
+    tasksDistributions?.allUserTasks.reduce(
       (acc: Record<string, number>, task) => {
         const { priority } = task;
 
@@ -146,7 +146,7 @@ export default function Home() {
           </h3>
           <div style={{ height: 400, width: "100%" }}>
             <DataGrid
-              rows={tasksDistributions?.allTasksDistributions}
+              rows={tasksDistributions?.allUserTasks}
               columns={taskColumns}
               checkboxSelection
               loading={isLoadingTasks}

@@ -13,7 +13,7 @@ export default function ModelNewTask({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  status: Status;
+  status?: Status;
 }) {
   const projectId = useAppSelector((state) => state.global.projectId);
   const [createTask, { isLoading }] = useCreateTaskMutation();

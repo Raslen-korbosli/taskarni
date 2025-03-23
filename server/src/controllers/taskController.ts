@@ -83,16 +83,36 @@ export const updateTask = async (req: Request, res: Response) => {
     });
   }
 };
-export const getTasksDistributions = async (req: Request, res: Response) => {
+export const getUserTasks = async (req: Request, res: Response) => {
+  const userId = req.params;
   try {
-    const allTasksDistributions = await db.task.findMany({
-      where: {},
+    const tasksWithAuthorNameAndAssigneeName = await db.task.findMany({
+      where: {
+        // OR: [{ assignedUserId: Number(userId), authorUserId: Number(userId) }],
+      },
     });
+    const allUserTasks = await Promise.all(
+      tasksWithAuthorNameAndAssigneeName.map(async (task) => {
+        let assigneeName;
+        if (task.assignedUserId) {
+          assigneeName = await db.user.findUnique({
+            where: { userId: 1 },
+            select: { username: true },
+          });
+          console.log(assigneeName);
+        }
+        // const AuthorName = await db.user.findUnique({
+        //   where: { userId: task.authorUserId! || undefined },
+        //   select: { username: true },
+        // });
 
+        return { ...task, assigneeName };
+      })
+    );
     res.status(200).json({
       status: 'success',
-      allTasksDistributions,
-      length: allTasksDistributions.length,
+      allUserTasks,
+      length: allUserTasks.length,
     });
   } catch (e: any) {
     res.status(400).json({
